@@ -1,2 +1,2 @@
 # json-api-generator
-A GUI for generating node API. 
+A GUI for generating json API. 
