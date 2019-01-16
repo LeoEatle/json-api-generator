@@ -6,13 +6,8 @@ const baseWebpackConfig = require('./webpack.base.conf');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack4-plugin');
 const portfinder = require('portfinder');
-const HtmlWebpackPosPlugin = require('html-webpack-pos-plugin');
 const config = require('./config');
-const utils = require('./utils');
 
-for (var key in baseWebpackConfig.entry) {
-    baseWebpackConfig.entry[key].unshift('react-hot-loader/patch');
-}
 
 const devWebpackConfig = merge(baseWebpackConfig, {
     mode: 'development',
@@ -26,7 +21,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                 use: [
                     'style-loader',
                     'css-loader',
-                    'postcss-loader',
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            ident: "postcss",
+                            plugins: [require("autoprefixer")]
+                        }
+                    },
                     'less-loader'
                 ]
             },
@@ -35,7 +36,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                 use: [
                     'style-loader',
                     'css-loader',
-                    'postcss-loader'
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            ident: "postcss",
+                            plugins: [require("autoprefixer")]
+                        }
+                    },
                 ]
             }
         ]
@@ -46,44 +53,23 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         clientLogLevel: 'error',
         inline: true,
         hot: true,
-        compress: true,
+        // compress: true,
         host: 'localhost',
-        port: config.webpack.port,
+        port: config.port || 8001,
         quiet: true // necessary for FriendlyErrorsPlugin
     },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: 'development'
-            },
-        }),
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         NODE_ENV: 'development'
+        //     },
+        // }),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src/client/main.html')
+            template: path.resolve(__dirname, '../src/client/main.html')
         })
-        // new HtmlWebpackPosPlugin()
     ],
 });
-
-// multiple html pages
-// devWebpackConfig.plugins = devWebpackConfig.plugins.concat(
-//     // config.webpack.htmls.map((page) => {
-//     //     const { head, body, chunks = [] } = page;
-//     //     return new HtmlWebpackPlugin({
-//     //         filename: page.key + '.html',
-//     //         template: page.path,
-//     //         inject: true,
-//     //         chunks: [`js/${page.key}`].concat(chunks),
-//     //         head,
-//     //         body,
-//     //         chunkSortMode: 'dependency',
-//     //     });
-//     // }),
-//     new HtmlWebpackPlugin({
-//         template: path.resolve(__dirname, 'src/client/main.html')
-//     }),
-//     new HtmlWebpackPosPlugin()
-// );
 
 module.exports = new Promise((resolve, reject) => {
     portfinder.basePort = process.env.PORT || '8001';

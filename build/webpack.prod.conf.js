@@ -5,11 +5,10 @@ const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const HtmlWebpackPosPlugin = require('html-webpack-pos-plugin');
-// const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const config = require('./config');
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -28,7 +27,13 @@ const webpackConfig = merge(baseWebpackConfig, {
                         }
                     },
                     'css-loader',
-                    'postcss-loader',
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            ident: "postcss",
+                            plugins: [require("autoprefixer")]
+                        }
+                    },
                     'less-loader'
                 ]
             },
@@ -44,12 +49,29 @@ const webpackConfig = merge(baseWebpackConfig, {
                         }
                     },
                     'css-loader',
-                    'postcss-loader'
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            ident: "postcss",
+                            plugins: [require("autoprefixer")]
+                        }
+                    },
                 ]
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [
+                    {
+                        loader: 'url-loader',
+                        query: {
+                            limit: 1024,
+                            name: `img/[name]-[hash:6].[ext]`,
+                        },
+                    },
+                ],
             }
         ]
     },
-    devtool: 'source-map',
     output: {
         filename: '[name]-[chunkhash:6].js', // string
         chunkFilename: 'js/[name]-[chunkhash:6].bundle.js',
@@ -57,9 +79,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     },
     externals: {
         react: 'React',
-        'react-dom': 'ReactDOM',
-        raven: 'Raven',
-        jquery: 'jQuery',
+        'react-dom': 'ReactDOM'
     },
     performance: {
         hints: 'warning', // enum
@@ -86,16 +106,11 @@ const webpackConfig = merge(baseWebpackConfig, {
     },
     // webpack 4 config end
     plugins: [
-        // new HardSourceWebpackPlugin({
-        //     options: {
-        //         cacheDirectory: 'node_modules/.cache/hard-source/[confighash]'
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         NODE_ENV: 'production'
         //     }
         // }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: 'production'
-            }
-        }),
         new UglifyJsPlugin({
             uglifyOptions: {
                 compress: {
@@ -111,14 +126,23 @@ const webpackConfig = merge(baseWebpackConfig, {
         new webpack.optimize.ModuleConcatenationPlugin(),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: "[id].css"
+        }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src/client/main.html'),
+            template: path.resolve(__dirname, '../src/client/main.html'),
             minify: {
                 removeAttributeQuotes: true,
                 collapseWhitespace: true,
                 minifyCSS: true,
                 removeComments: true,
             }
+        }),
+        new CleanWebpackPlugin(['dist'], {
+            root: path.resolve(__dirname, '../'),
+            verbose: true,
+            dry: false
         })
     ],
 });
