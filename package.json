@@ -28,11 +28,7 @@
         "coverageDirectory": "coverage"
     },
     "lint-staged": {
-        "*.js": [
-            "eslint --fix",
-            "git add"
-        ],
-        "*.json": [
+        "*.{js,json,css,less,ts,tsx,jsx,md}": [
             "prettier --write",
             "git add"
         ]
