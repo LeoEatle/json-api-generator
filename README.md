@@ -12,3 +12,13 @@ Yes, they can. All you need is this. A GUI for generating json API. It's based o
 Then, they can just click publish button to make the magic happen. You don't need to create a operating system for them. Just a simple editable json api is all you need.
 
 Another scene is about config file. We often need some configure files for our system such as the scheduled tasks. It's hard to create a whole system for editing config file. With json-api-generator, you can easily create a config file for your system and it can be changeable anytime as you wish.
+
+# How to contribute
+Please confirm your code is prettier.
+
+```bash
+# after development
+git add .
+npm run commit
+git push
+```

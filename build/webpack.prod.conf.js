@@ -5,7 +5,7 @@ const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -21,21 +21,21 @@ const webpackConfig = merge(baseWebpackConfig, {
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                          // you can specify a publicPath here
-                          // by default it use publicPath in webpackOptions.output
-                        //   publicPath: config.publicPath
-                        }
+                            // you can specify a publicPath here
+                            // by default it use publicPath in webpackOptions.output
+                            //   publicPath: config.publicPath
+                        },
                     },
                     'css-loader',
                     {
-                        loader: "postcss-loader",
+                        loader: 'postcss-loader',
                         options: {
-                            ident: "postcss",
-                            plugins: [require("autoprefixer")]
-                        }
+                            ident: 'postcss',
+                            plugins: [require('autoprefixer')],
+                        },
                     },
-                    'less-loader'
-                ]
+                    'less-loader',
+                ],
             },
             {
                 test: /\.css$/,
@@ -43,20 +43,20 @@ const webpackConfig = merge(baseWebpackConfig, {
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                          // you can specify a publicPath here
-                          // by default it use publicPath in webpackOptions.output
-                        //   publicPath: config.publicPath
-                        }
+                            // you can specify a publicPath here
+                            // by default it use publicPath in webpackOptions.output
+                            //   publicPath: config.publicPath
+                        },
                     },
                     'css-loader',
                     {
-                        loader: "postcss-loader",
+                        loader: 'postcss-loader',
                         options: {
-                            ident: "postcss",
-                            plugins: [require("autoprefixer")]
-                        }
+                            ident: 'postcss',
+                            plugins: [require('autoprefixer')],
+                        },
                     },
-                ]
+                ],
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
@@ -69,8 +69,8 @@ const webpackConfig = merge(baseWebpackConfig, {
                         },
                     },
                 ],
-            }
-        ]
+            },
+        ],
     },
     output: {
         filename: '[name]-[chunkhash:6].js', // string
@@ -79,7 +79,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     },
     externals: {
         react: 'React',
-        'react-dom': 'ReactDOM'
+        'react-dom': 'ReactDOM',
     },
     performance: {
         hints: 'warning', // enum
@@ -121,14 +121,14 @@ const webpackConfig = merge(baseWebpackConfig, {
             parallel: true,
         }),
         new OptimizeCSSPlugin({
-            cssProcessorOptions: { safe: true }
+            cssProcessorOptions: { safe: true },
         }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].css',
-            chunkFilename: "[id].css"
+            chunkFilename: '[id].css',
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../src/client/main.html'),
@@ -137,16 +137,15 @@ const webpackConfig = merge(baseWebpackConfig, {
                 collapseWhitespace: true,
                 minifyCSS: true,
                 removeComments: true,
-            }
+            },
         }),
         new CleanWebpackPlugin(['dist'], {
             root: path.resolve(__dirname, '../'),
             verbose: true,
-            dry: false
-        })
+            dry: false,
+        }),
     ],
 });
-
 
 if (config.analyzeMode) {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')

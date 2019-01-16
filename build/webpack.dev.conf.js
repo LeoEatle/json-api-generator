@@ -8,11 +8,10 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack4-plugin');
 const portfinder = require('portfinder');
 const config = require('./config');
 
-
 const devWebpackConfig = merge(baseWebpackConfig, {
     mode: 'development',
     output: {
-        publicPath: config.publicPath
+        publicPath: config.publicPath,
     },
     module: {
         rules: [
@@ -22,14 +21,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                     'style-loader',
                     'css-loader',
                     {
-                        loader: "postcss-loader",
+                        loader: 'postcss-loader',
                         options: {
-                            ident: "postcss",
-                            plugins: [require("autoprefixer")]
-                        }
+                            ident: 'postcss',
+                            plugins: [require('autoprefixer')],
+                        },
                     },
-                    'less-loader'
-                ]
+                    'less-loader',
+                ],
             },
             {
                 test: /\.css$/,
@@ -37,15 +36,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                     'style-loader',
                     'css-loader',
                     {
-                        loader: "postcss-loader",
+                        loader: 'postcss-loader',
                         options: {
-                            ident: "postcss",
-                            plugins: [require("autoprefixer")]
-                        }
+                            ident: 'postcss',
+                            plugins: [require('autoprefixer')],
+                        },
                     },
-                ]
-            }
-        ]
+                ],
+            },
+        ],
     },
     devtool: 'source-map',
     // these devServer options should be customized in /config/index.js
@@ -56,7 +55,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         // compress: true,
         host: 'localhost',
         port: config.port || 8001,
-        quiet: true // necessary for FriendlyErrorsPlugin
+        quiet: true, // necessary for FriendlyErrorsPlugin
     },
     plugins: [
         // new webpack.DefinePlugin({
@@ -66,8 +65,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         // }),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../src/client/main.html')
-        })
+            template: path.resolve(__dirname, '../src/client/main.html'),
+        }),
     ],
 });
 

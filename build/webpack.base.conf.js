@@ -1,5 +1,5 @@
 const path = require('path');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const srcPath = path.resolve(path.dirname(__dirname), 'src');
 const webpackConfig = {
@@ -30,7 +30,7 @@ const webpackConfig = {
                 test: /\.(j|t)sx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
                 },
             },
             {
@@ -40,7 +40,7 @@ const webpackConfig = {
                         loader: 'html-loader',
                     },
                 ],
-            }
+            },
         ],
     },
     resolve: {
@@ -87,9 +87,7 @@ const webpackConfig = {
     },
     // lets you precisely control what bundle information gets displayed
 
-    plugins: [
-        new ForkTsCheckerWebpackPlugin()
-    ],
+    plugins: [new ForkTsCheckerWebpackPlugin()],
     parallelism: 4, // number
     // limit the number of parallel processed modules
     profile: true, // boolean
